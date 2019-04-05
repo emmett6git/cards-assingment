@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Card Dealer</title>
+	<script>
+		function is_valid_number( value ){
+			return value.match(/^\d+$/);
+		}
+		
+		function validate(){
+
+			var number_of_people = document.getElementById("number_of_people").value;
+			var number_of_cards = document.getElementById("number_of_cards").value;
+
+			if( !is_valid_number( $number_of_people ) || $number_of_people < 1 ){
+				alert("Number of people has invalid value.");
+				return false;
+			}
+
+			if( !is_valid_number( $number_of_cards ) || $number_of_cards < 1 ){
+				alert("Number of cards has invalid value.");
+				return false;
+			}
+
+			return true;
+		}
+	</script>
+</head>
+<body>
+	<form method="get" action="script.php" onsubmit="return validate()" >
+		<p>
+			<label>Number of People</label><br/>
+			<input type="text" value="2" name="number_of_people" id="number_of_people" />
+		</p>
+		<p>
+			<label>Number of Cards</label><br/>
+			<input type="text" value="52" name="number_of_cards" id="number_of_cards" />
+		</p>
+		<input type="hidden" value="calculate" name="action" />
+		<input type="submit" value="Calculate" />
+	</form>
+</body>
+</html>
