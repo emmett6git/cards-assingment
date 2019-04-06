@@ -1,0 +1,8 @@
+1: Seen many "Like" operator's in query Instead of using Like we can use full text search in query as it
+
+involves indexing the individual words within a text field in order to make searching through many records quickly
+
+2: Must remove unnessary columns in query if we are not using them
+
+3 : make sure all predicates like join , where ,orderby are indexed
+    
