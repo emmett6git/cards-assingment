@@ -1,43 +1,119 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Card Dealer</title>
-	<script>
-		function is_valid_number( value ){
-			return value.match(/^\d+$/);
-		}
-		
-		function validate(){
 
-			var number_of_people = document.getElementById("number_of_people").value;
-			var number_of_cards = document.getElementById("number_of_cards").value;
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <title>Card Dealer</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+    <h5 class="my-0 mr-md-auto font-weight-normal">Card Dealer</h5>
+  </div>
 
-			if( !is_valid_number( $number_of_people ) || $number_of_people < 1 ){
-				alert("Number of people has invalid value.");
-				return false;
-			}
+<style type="text/css">
+  .output {
 
-			if( !is_valid_number( $number_of_cards ) || $number_of_cards < 1 ){
-				alert("Number of cards has invalid value.");
-				return false;
-			}
+     margin-top: 20px;
+  }
+</style>
 
-			return true;
-		}
-	</script>
-</head>
-<body>
-	<form method="get" action="script.php" onsubmit="return validate()" >
-		<p>
-			<label>Number of People</label><br/>
-			<input type="text" value="2" name="number_of_people" id="number_of_people" />
-		</p>
-		<p>
-			<label>Number of Cards</label><br/>
-			<input type="text" value="52" name="number_of_cards" id="number_of_cards" />
-		</p>
-		<input type="hidden" value="calculate" name="action" />
-		<input type="submit" value="Calculate" />
-	</form>
+<div class="container-fluid h-100">
+    <div class="row justify-content-center align-items-center h-100">
+        <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3">
+
+            <div class="msgs"></div>
+            <form id="card-dealer">
+
+                <div class="form-group">
+                    <label>Number of People</label>
+                    <input class="form-control form-control-lg"  type="text" id="people">
+                </div>
+
+                <div class="form-group">
+                    <label>Number of Cards</label>
+                    <input class="form-control form-control-lg"  type="text" id="cards">
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-info btn-lg btn-block" type="submit">Calculate</button>
+                </div>
+
+            </form>
+
+
+
+            <br/>
+
+            <h4 class="">Output</h4>
+
+            <div class="output col-md-12">-- Click calculate button for output --</div>
+
+        </div>
+
+    </div>
+   
+
+    
+   
+
+</div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <script type="text/javascript">
+     
+      $(document).ready(function(){
+         
+          $("#card-dealer").on("submit",function(){
+
+              let data = {};
+
+              data.action = 'calculate';
+
+              data.number_of_people = $("#people").val();
+
+              data.number_of_cards  = $("#cards").val();
+
+              $.ajax({
+                 
+                 type:'POST',
+                 url:'script.php',
+                 data:data,
+                 success:function(response){
+
+                    let res = JSON.parse(response);
+
+                    if(res.error){
+
+                       let msg = `<div class="alert alert-danger" role="alert">${res.msg}</div>`;
+
+                       $(".msgs").html(msg);
+
+
+                    }else{
+                        
+                       $(".msgs").html('');
+
+                       $(".output").html(res.data);
+
+                       console.log(res);
+
+                    }
+                 }
+
+              });
+
+              return false;
+
+          });
+          
+      });
+
+  </script>
+
 </body>
 </html>

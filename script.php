@@ -65,24 +65,37 @@ function is_valid_number( $number ){
 	return !!preg_match('/^\d+$/',$number);
 }
 
-if( isset($_GET["action"]) && $_GET["action"] == "calculate" ):
+if( isset($_POST["action"]) && $_POST["action"] == "calculate" ):
 
-	$number_of_people = trim( $_GET["number_of_people"] );
-	$number_of_cards = trim( $_GET["number_of_cards"] );
+	$number_of_people = trim( $_POST["number_of_people"] );
+	$number_of_cards = trim( $_POST["number_of_cards"] );
 
 	if( !is_valid_number( $number_of_people ) || $number_of_people < 1 ) :
 
-		die("Number of people has invalid value.");
+		$response = array("error" => true,"msg"=>"Number of people has invalid value.");
+
+		echo json_encode($response);
+
+		exit;
 		
 	endif;
 
 	if( !is_valid_number( $number_of_cards ) || $number_of_cards < 1 ) :
 
-		die("Number of cards has invalid value.");
+		$response = array("error" => true,"msg"=>"Number of cards has invalid value.");
+
+		echo json_encode($response);
+
+		exit;
 		
 	endif;
 
-	header("Content-type:text/plain");
-	echo deal_cards( (int)$number_of_people, (int)$number_of_cards );
+	$data     = deal_cards( (int)$number_of_people, (int)$number_of_cards );
+
+	$response = array("error" => false,"data"=>$data);
+
+    echo json_encode($response);
+
+	exit;
 
 endif;
